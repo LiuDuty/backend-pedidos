@@ -27,6 +27,7 @@ app.use(bodyParser.json());
 app.use('/api/customers', require('./src/routes/customers'));
 app.use('/api/suppliers', require('./src/routes/suppliers'));
 app.use('/api/orders', require('./src/routes/orders'));
+app.use('/api/notas-fiscais', require('./src/routes/notasFiscais'));
 
 // Test DB connection
 db.authenticate()
