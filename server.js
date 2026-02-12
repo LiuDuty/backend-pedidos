@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const path = require('path');
 const db = require('./src/config/database');
 
 // Build associations
@@ -23,6 +24,9 @@ const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(bodyParser.json());
+
+// Serve static files (logos)
+app.use('/logos', express.static(path.join(__dirname, 'public/logos')));
 
 app.use('/api/customers', require('./src/routes/customers'));
 app.use('/api/suppliers', require('./src/routes/suppliers'));
