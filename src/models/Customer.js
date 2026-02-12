@@ -46,6 +46,9 @@ const Customer = db.define('customer', {
     },
     state_registration: {
         type: Sequelize.STRING
+    },
+    xml_email: {
+        type: Sequelize.STRING
     }
 });
 

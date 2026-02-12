@@ -24,48 +24,28 @@ const Order = db.define('order', {
     deliveryDate: {
         type: Sequelize.DATEONLY
     },
-    deliveryAddress: {
-        type: Sequelize.STRING
-    },
-    deliveryCity: {
-        type: Sequelize.STRING
-    },
-    deliveryState: {
-        type: Sequelize.STRING
-    },
-    deliveryCnpj: {
-        type: Sequelize.STRING
-    },
-    deliveryIe: {
-        type: Sequelize.STRING
-    },
-    deliveryZip: {
-        type: Sequelize.STRING
-    },
-    deliveryPhone: {
-        type: Sequelize.STRING
-    },
-    billingAddress: {
-        type: Sequelize.STRING
-    },
-    carrier: {
-        type: Sequelize.STRING
-    },
-    carrierPhone: {
-        type: Sequelize.STRING
-    },
-    carrierContact: {
-        type: Sequelize.STRING
-    },
-    freightType: {
-        type: Sequelize.STRING // CIF/FOB
-    },
-    paymentTerms: {
-        type: Sequelize.STRING
-    },
-    observation: {
-        type: Sequelize.TEXT
-    },
+    // Dados de Entrega
+    deliveryName: { type: Sequelize.STRING },
+    deliveryAddress: { type: Sequelize.STRING },
+    deliveryCity: { type: Sequelize.STRING },
+    deliveryState: { type: Sequelize.STRING },
+    deliveryCnpj: { type: Sequelize.STRING },
+    deliveryIe: { type: Sequelize.STRING },
+    deliveryZip: { type: Sequelize.STRING },
+    deliveryPhone: { type: Sequelize.STRING },
+
+    // Dados de Cobrança
+    billingAddress: { type: Sequelize.STRING },
+    billingCity: { type: Sequelize.STRING },
+    billingState: { type: Sequelize.STRING },
+
+    carrier: { type: Sequelize.STRING },
+    carrierPhone: { type: Sequelize.STRING },
+    carrierContact: { type: Sequelize.STRING },
+    freightType: { type: Sequelize.STRING }, // CIF/FOB
+    paymentTerms: { type: Sequelize.STRING },
+    observation: { type: Sequelize.TEXT },
+
     customerId: {
         type: Sequelize.INTEGER,
         allowNull: false
@@ -75,7 +55,6 @@ const Order = db.define('order', {
         allowNull: false
     }
 }, {
-    // Adicionando um índice único composto para garantir unicidade por fornecedor/cliente
     indexes: [
         {
             unique: true,

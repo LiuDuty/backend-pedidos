@@ -15,7 +15,6 @@ async function seed() {
             address: 'RUA PAULO HENRIQUE BROERING',
             number: '97',
             zipcode: '88509-550',
-            po_box: '1111',
             neighborhood: 'CORAL',
             city: 'LAGES',
             state: 'SC',
@@ -28,48 +27,65 @@ async function seed() {
 
         // Seed Customer
         const customer = await Customer.create({
-            name: 'GRANJA FARIA',
-            address: 'RUA LUIZ GONZAGA BICUDO',
-            number: '1313',
-            zipcode: '13309-036',
-            neighborhood: 'VILA NOVA',
-            city: 'ITU',
+            name: 'HORTA VITAE DISTRIBUIDORA DE ALIMENTOS LTDA.',
+            address: 'RUA BENEDITO ISAAC PIRES',
+            number: '600',
+            zipcode: '06716-300',
+            neighborhood: 'VILA MARANHÃO',
+            city: 'COTIA',
             state: 'SP',
-            phone: '11 4813-3154',
-            contact: 'ROBERTO DE PAULA VITOR',
-            email: 'adm@granjaitu.com.br',
-            cnpj: '38.439.131/0001-42',
-            state_registration: '3,87321E+11'
+            phone: '14 3812-7000',
+            contact: 'RENATO BOARO',
+            email: 'compras@hortavitae.com.br',
+            cnpj: '74.242.876/0001-80',
+            state_registration: '278.121.234.114'
         });
 
-        // Seed Order
+        // Seed Order 614 (from image)
+        const orderValueQty = 5200;
+        const orderValuePriceM = 1328.00;
+        const subtotalValue = (orderValueQty * orderValuePriceM) / 1000;
+        const ipiValue = 9.75;
+        const totalValue = subtotalValue + (subtotalValue * ipiValue / 100);
+
         const order = await Order.create({
-            orderNumber: '1',
-            orderDate: '2025-09-24',
-            customerOc: 'OC-12345',
-            email: 'adm@granjaitu.com.br',
-            deliveryDate: '2025-05-23',
-            deliveryAddress: 'O MESMO',
-            carrier: 'TRANSPORTADORA EXEMPLO',
-            paymentTerms: '30/45 DIAS DA DATA DE FATURAMENTO, LÍQUIDO',
-            observation: 'PAGO',
+            orderNumber: '614',
+            orderDate: '2025-12-04',
+            customerOc: 'OC-614',
+            email: 'nfe@hortavitae.com.br',
+            deliveryDate: '2025-12-10',
+            deliveryName: 'MARCELO PEREIRA (FAZENDA SANTA EMILIA)',
+            deliveryAddress: 'RODOVIA MARECHAL RONDON, KM 280 - ZONA RURAL',
+            deliveryCity: 'SÃO MANUEL',
+            deliveryState: 'SP',
+            deliveryCnpj: '13.683.220/0001-09',
+            deliveryIe: '649.029.319.116',
+            deliveryZip: '18650-000',
+            deliveryPhone: '14 3812-7000',
+            billingAddress: 'RUA BENEDITO ISAAC PIRES, 600 - VILA MARANHÃO',
+            billingCity: 'COTIA',
+            billingState: 'SP',
+            paymentTerms: '28 DIAS DA DATA DE PAGAMENTO, LÍQUIDO',
+            freightType: 'CIF',
+            observation: '',
             customerId: customer.id,
             supplierId: supplier.id
         });
 
-        // Seed Order Item
         await OrderItem.create({
-            productName: 'BANDEJA OVO GALINHA SRG 10',
-            productCode: 'BG-10',
-            caseQuantity: 90,
-            weight: 45.000,
-            quantity: 45.00,
-            unitPrice: 526.20,
-            ipi: 0,
+            productName: 'BANDEJA OVO GALINHA 20 UND NATURAL DA TERRA - HORTA VITAE',
+            productCode: 'SRG 20',
+            caseQuantity: 13,
+            weight: 130,
+            quantity: 5200,
+            pricePerThousand: 1328.00,
+            subtotal: subtotalValue,
+            ipi: ipiValue,
+            total: totalValue,
             orderId: order.id
         });
 
-        console.log('Database seeded successfully!');
+        console.log('Database seeded successfully with order 614!');
         process.exit(0);
     } catch (err) {
         console.error('Error seeding database:', err);

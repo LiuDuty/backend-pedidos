@@ -26,11 +26,23 @@ const OrderItem = db.define('orderItem', {
         type: Sequelize.DECIMAL(10, 2),
         defaultValue: 0.00
     },
+    pricePerThousand: {
+        type: Sequelize.DECIMAL(10, 2),
+        defaultValue: 0.00
+    },
+    subtotal: {
+        type: Sequelize.DECIMAL(10, 2),
+        defaultValue: 0.00
+    },
     unitPrice: {
         type: Sequelize.DECIMAL(10, 2),
-        allowNull: false
+        allowNull: true // Agora usamos pricePerThousand como base
     },
     ipi: {
+        type: Sequelize.DECIMAL(10, 2),
+        defaultValue: 0.00
+    },
+    total: {
         type: Sequelize.DECIMAL(10, 2),
         defaultValue: 0.00
     },
