@@ -1,11 +1,23 @@
 const Sequelize = require('sequelize');
-const path = require('path');
 
-const dbPath = path.resolve(__dirname, '../../notas.db');
+if (!process.env.DATABASE_URL) {
+    console.error('CRITICAL ERROR: DATABASE_URL is not defined in environment variables!');
+    process.exit(1);
+}
 
-const sequelize = new Sequelize({
-    dialect: 'sqlite',
-    storage: dbPath,
+console.log('Connecting to PostgreSQL database...');
+
+const sequelize = new Sequelize(process.env.DATABASE_URL, {
+    dialect: 'postgres',
+    protocol: 'postgres',
+    dialectOptions: {
+        ssl: process.env.NODE_ENV === 'production' || process.env.DATABASE_URL.includes('b4a.run') || process.env.DATABASE_URL.includes('render.com')
+            ? {
+                require: true,
+                rejectUnauthorized: false
+            }
+            : false
+    },
     logging: false
 });
 
