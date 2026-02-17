@@ -32,32 +32,40 @@ async function processNextMessage() {
         // We will perform a build check and then git push.
 
         try {
-            console.log('Running build check in Frontend...');
-            // execSync('npm run build', { cwd: FRONTEND_PATH, stdio: 'inherit' });
+            console.log('--- Step 1: Frontend Build ---');
+            try {
+                execSync('npm run build', { cwd: FRONTEND_PATH, stdio: 'inherit' });
+                console.log('✅ Build successful.');
+            } catch (buildErr) {
+                console.warn('⚠️ Build failed or skipped, proceeding with push anyway...');
+            }
 
-            console.log('Committing and Pushing Backend updates...');
+            console.log('--- Step 2: Git Backend ---');
             execSync('git add .', { cwd: BACKEND_PATH, stdio: 'inherit' });
             try {
-                execSync(`git commit -m "Automated Release: ${commandText.substring(0, 50)}"`, { cwd: BACKEND_PATH, stdio: 'inherit' });
+                execSync(`git commit -m "Remote Release [WhatsApp]: ${commandText.trim().substring(0, 100)}"`, { cwd: BACKEND_PATH, stdio: 'inherit' });
+                execSync('git push', { cwd: BACKEND_PATH, stdio: 'inherit' });
+                console.log('✅ Backend pushed.');
             } catch (e) {
-                console.log('No changes to commit in Backend.');
+                console.log('ℹ️ No changes to commit in Backend or push failed.');
             }
-            execSync('git push', { cwd: BACKEND_PATH, stdio: 'inherit' });
 
-            console.log('Committing and Pushing Frontend updates...');
+            console.log('--- Step 3: Git Frontend ---');
             execSync('git add .', { cwd: FRONTEND_PATH, stdio: 'inherit' });
             try {
-                execSync(`git commit -m "Automated Release: ${commandText.substring(0, 50)}"`, { cwd: FRONTEND_PATH, stdio: 'inherit' });
+                execSync(`git commit -m "Remote Release [WhatsApp]: ${commandText.trim().substring(0, 100)}"`, { cwd: FRONTEND_PATH, stdio: 'inherit' });
+                execSync('git push', { cwd: FRONTEND_PATH, stdio: 'inherit' });
+                console.log('✅ Frontend pushed.');
             } catch (e) {
-                console.log('No changes to commit in Frontend.');
+                console.log('ℹ️ No changes to commit in Frontend or push failed.');
             }
-            execSync('git push', { cwd: FRONTEND_PATH, stdio: 'inherit' });
 
             // 2. MOVE TO PROCESSED
             const processedFilename = filename.replace('PENDING', 'SUCCESS');
             await fs.move(filepath, path.join(PROCESSED_DIR, processedFilename));
-            console.log(`✅ Successfully processed and uploaded: ${filename}`);
+            console.log(`\n🎉 Release Process Completed Successfully! Archivied as ${processedFilename}`);
 
+            // Optional: You could even send a message back here, but the listener does it upon receipt.
         } catch (releaseErr) {
             console.error('Failed to complete release:', releaseErr);
             // Optionally move to a "failed" folder
